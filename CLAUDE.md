@@ -5,15 +5,39 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 This project uses **uv** (Python ≥ 3.13). The CLI entry point is `oc` (= `odoo_cli.cli.main:run`).
+Common dev tasks have `make` shortcuts (`make setup|ruff|format|pyright|test|check`); each just
+wraps the `uv run` command below.
 
 ```bash
 uv sync                       # install deps + dev tools
 uv run oc --help              # run the CLI
 uv run ruff check .           # lint (line-length 100; rules: E,F,I,UP,B,SIM)
+uv run ruff format .          # auto-format (enforced in CI/pre-commit)
 uv run pyright                # type-check (standard mode, src + tests)
 uv run pytest                 # full unit test suite (mocked transport, no network)
 uv run pytest tests/test_crm_lead.py::test_name -v   # single test
 ```
+
+### Pre-commit / commit conventions
+
+Hooks are defined in `.pre-commit-config.yaml`. After `uv sync`, enable them once per
+clone:
+
+```bash
+uv run pre-commit install --install-hooks   # installs pre-commit + commit-msg hooks
+uv run pre-commit run --all-files           # run everything on demand
+```
+
+- **`pre-commit` stage** runs `ruff check --fix`, `ruff format`, and `pyright` (plus
+  whitespace/EOF/TOML hygiene). The lint/type hooks are **`language: system`** and shell out
+  to `uv run`, so they use the exact versions pinned in `uv.lock` — there is no second,
+  drifting tool install. `pyright` runs with `pass_filenames: false` because type-checking
+  needs the whole package in view, not just the staged files.
+- **`commit-msg` stage** runs **commitizen**, which enforces [Conventional
+  Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `chore:`, …). Config lives
+  in `[tool.commitizen]` in `pyproject.toml` (`major_version_zero = true`; version sourced
+  from `pep621` / `project.version`). Use `uv run cz commit` for a guided message, or
+  `uv run cz bump` to tag a release and update the changelog.
 
 Live smoke tests are **opt-in** and hit a real Odoo instance (read-only):
 

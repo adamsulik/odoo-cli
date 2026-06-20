@@ -42,11 +42,27 @@ request without sending it.
 
 ## Develop
 
+Set up a dev environment once — this syncs the dev dependency group and installs the git
+hooks (`pre-commit` + `commit-msg`):
+
 ```bash
-uv run ruff check .
-uv run pyright
-uv run pytest
+make setup        # uv sync --dev && pre-commit install --install-hooks
 ```
+
+Common tasks have `make` shortcuts (each shells out to `uv run`, so versions follow
+`uv.lock`):
+
+```bash
+make ruff         # lint with ruff (auto-fix)
+make format       # auto-format with ruff
+make pyright      # type-check
+make test         # run the unit test suite
+make check        # run every pre-commit hook on all files
+```
+
+Commits must follow [Conventional Commits](https://www.conventionalcommits.org/) — the
+`commit-msg` hook (commitizen) enforces this. Use `uv run cz commit` for a guided message and
+`uv run cz bump` to tag a release. Prefer plain `make`/`uv` over global tool installs.
 
 The package is layered as an importable core (`client.py` → `resources/`) under a thin Typer
 CLI (`cli/`), so adding new resources/commands (sales orders, projects, …) is mechanical.

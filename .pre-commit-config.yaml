@@ -1,0 +1,49 @@
+# Pre-commit hooks for odoo-cli.
+# Install once:   uv run pre-commit install --install-hooks --hook-type commit-msg
+# Run on demand:  uv run pre-commit run --all-files
+#
+# Lint/type-check hooks run via `uv run` so they use the exact versions pinned in
+# the dev dependency group (uv.lock) — no second, drifting tool install.
+default_install_hook_types: [pre-commit, commit-msg]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-toml
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: uv run ruff check --fix
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
+
+      - id: ruff-format
+        name: ruff format
+        entry: uv run ruff format
+        language: system
+        types_or: [python, pyi]
+        require_serial: true
+
+      - id: pyright
+        name: pyright
+        entry: uv run pyright
+        language: system
+        types_or: [python, pyi]
+        # Type-checking needs the whole package in view, not just staged files.
+        pass_filenames: false
+        require_serial: true
+
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.16.3
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
