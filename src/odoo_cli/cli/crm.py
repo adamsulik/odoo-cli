@@ -96,9 +96,7 @@ def create_lead(
         str | None, typer.Option("--user", "-u", help="Assign salesperson (name/login/id).")
     ] = None,
     description: Annotated[str | None, typer.Option("--description", help="Notes.")] = None,
-    lead_type: Annotated[
-        str, typer.Option("--type", help="lead or opportunity.")
-    ] = "lead",
+    lead_type: Annotated[str, typer.Option("--type", help="lead or opportunity.")] = "lead",
 ) -> None:
     """Create a new lead."""
     app_ctx = _ctx(ctx)

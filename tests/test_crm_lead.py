@@ -26,9 +26,7 @@ def test_create_builds_vals_and_refetches(client, backend):
     backend.route("crm.lead", "create", lambda *_: 42)
     backend.route("crm.lead", "read", lambda *_: [{"id": 42, "name": "Deal"}])
 
-    record = CrmLead(client).create(
-        "Deal", email="x@y.com", expected_revenue=1000.0, user_id=3
-    )
+    record = CrmLead(client).create("Deal", email="x@y.com", expected_revenue=1000.0, user_id=3)
 
     create_body = backend.requests[-2]["body"]
     assert create_body["vals"] == {

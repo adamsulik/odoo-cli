@@ -72,9 +72,7 @@ def test_leads_assign_ambiguous_user_errors(wire):
 
 
 def test_dry_run_does_not_send(wire):
-    result = runner.invoke(
-        main.app, ["--dry-run", "crm", "leads", "create", "--name", "X"]
-    )
+    result = runner.invoke(main.app, ["--dry-run", "crm", "leads", "create", "--name", "X"])
     assert result.exit_code == 0, result.output
     assert wire.requests == []
 
@@ -115,9 +113,7 @@ def test_leads_note_posts_internal_note(wire):
 
 
 def test_leads_note_dry_run_does_not_send(wire):
-    result = runner.invoke(
-        main.app, ["--dry-run", "crm", "leads", "note", "7", "--body", "x"]
-    )
+    result = runner.invoke(main.app, ["--dry-run", "crm", "leads", "note", "7", "--body", "x"])
     assert result.exit_code == 0, result.output
     assert wire.requests == []
 

@@ -68,17 +68,13 @@ def main(
         Format | None,
         typer.Option("--format", "-f", help="Output format (default: table on a TTY, else json)."),
     ] = None,
-    json_: Annotated[
-        bool, typer.Option("--json", help="Shorthand for --format json.")
-    ] = False,
+    json_: Annotated[bool, typer.Option("--json", help="Shorthand for --format json.")] = False,
     dry_run: Annotated[
         bool, typer.Option("--dry-run", help="Print the request that would be sent, then exit.")
     ] = False,
 ) -> None:
     chosen = Format.JSON if json_ else fmt
-    ctx.obj = AppContext(
-        profile_name=profile, fmt=render.resolve_format(chosen), dry_run=dry_run
-    )
+    ctx.obj = AppContext(profile_name=profile, fmt=render.resolve_format(chosen), dry_run=dry_run)
 
 
 def run() -> None:
