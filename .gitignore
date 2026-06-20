@@ -9,9 +9,6 @@ wheels/
 # Virtual environments
 .venv
 
-# Local editor / agent config
-.claude/
-
 # Test / type-checker caches
 .pytest_cache/
 .ruff_cache/
