@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Working in this repo
+
+- Whenever planning mode is enabled, load the `grill-me` skill.
+
 ## Commands
 
 This project uses **uv** (Python ≥ 3.13). The CLI entry point is `oc` (= `odoo_cli.cli.main:run`).
