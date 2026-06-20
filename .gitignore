@@ -1,0 +1,17 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Local editor / agent config
+.claude/
+
+# Test / type-checker caches
+.pytest_cache/
+.ruff_cache/
